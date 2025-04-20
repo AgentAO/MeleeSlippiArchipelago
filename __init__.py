@@ -1,5 +1,5 @@
 import random
-from typing import List
+from typing import List, Dict, Any
 from BaseClasses import MultiWorld
 from .Regions import create_regions
 from .Locations import MeleeSlippiLocation, location_table
@@ -49,6 +49,9 @@ class MeleeSlippiWorld(World):
         # Check valid difficulty setting
         if self.options.run_difficulty > RunDifficulty.option_impossible or self.options.run_difficulty < RunDifficulty.option_default:
             raise Exception(f"Run difficulty must be from {RunDifficulty.option_default} to {RunDifficulty.option_impossible}")
+
+        if self.options.total_character_wins_needed.value < 0 or self.options.total_character_wins_needed.value > len(getCharacterList()):
+            raise Exception(f"Total wins needed must be from 0 to {len(getCharacterList())}")
         
         # Check we're not including an excluded character
         for character in self.options.excluded_characters.value:
@@ -62,6 +65,13 @@ class MeleeSlippiWorld(World):
 
         if len(self.valid_characters) == 0:
             raise Exception("No characters are valid under current settings")
+        
+        # If we had a "total wins needed" of 0, we actually want to win with each character
+        if self.options.total_character_wins_needed.value == 0:
+            self.options.total_character_wins_needed.value = len(self.valid_characters)
+
+        if self.options.total_character_wins_needed.value > len(self.valid_characters):
+            raise Exception(f"Requiring more wins ({self.options.total_character_wins_needed.value}) than valid characters ({len(self.valid_characters)})")
 
     # Func to create one item
     def create_item(self, name: str) -> MeleeSlippiItem:
@@ -110,8 +120,12 @@ class MeleeSlippiWorld(World):
             self.multiworld.push_precollected(self.create_item(character))
     
 
-    def fill_slot_data(self):
+    def fill_slot_data(self) -> Dict[str, Any]:
         # Send over some information to the server that the game client will need to know
-        data_dict = self.options.as_dict("wins_needed")
-        data_dict["valid_characters"] = [character.name for character in self.valid_characters]
+        data_dict = {
+            "wins_needed": self.options.wins_needed,
+            "total_character_wins_needed": self.options.total_character_wins_needed.value,
+            "required_wins_per_character": self.options.required_wins_per_character.value,
+            "valid_characters": [character.name for character in self.valid_characters]
+        }
         return data_dict
