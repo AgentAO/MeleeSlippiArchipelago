@@ -54,7 +54,7 @@ Melee Slippi:
   # Number of wins needed per character for checks
   # Win 1, Max 10
   wins_needed:
-    [1]
+    [1,2,3]
 
   # Set how difficult the run should be, based on tiers in tier list #13
   # 0 - all characters
