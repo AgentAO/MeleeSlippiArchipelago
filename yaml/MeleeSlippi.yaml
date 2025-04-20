@@ -56,21 +56,36 @@ Melee Slippi:
   wins_needed:
     [1,2,3]
 
-  # Set how difficult the run should be, based on tiers in tier list #13
+  # Set how difficult the run should be, based on tiers from community
   # 0 - all characters
-  # 1 - S tiers only (fox, marth, jigglypuff, falco)
-  # 2 - A tiers and up (sheik, falcon, peach)
-  # 3 - B Tiers and up (ice climbers, pikachu, yoshi, samus, luigi, dr. mario)
-  # 4 - C Tiers and up (ganondorf, mario, donkey kong, young link, link, mr. game & watch)
+  # 1 - S tiers only (fox, marth, jigglypuff, falco, shiek)
+  # 2 - A tiers and up (falcon, peach, ice climbers)
+  # 3 - B Tiers and up (pikachu, yoshi, donkey kong, samus, luigi, dr. mario)
+  # 4 - C Tiers and up (ganondorf, mario, young link, link, mr. game & watch)
   # 5 - D and F tiers ONLY (mewtwo, roy, pichu, ness, zelda, kirby, bowser)
   run_difficulty:
     0
 
-  # Starting Character (OPTIONAL)
-  # A name for the starting character to select. See characters.py
+  # Starting Characters (OPTIONAL)
+  # Names for the starting character to select. See characters.py
   # You may define one or more characters
   # starting_characters:
     # ["Mario", "Luigi"]
+
+  # Excluded Characters (OPTIONAL)
+  # Names for characters to exclude from the run entirely. See characters.py
+  # You may define one or more characters.
+  # This applies after the difficulty selection
+  # excluded_characters:
+  #   ["Luigi", "Yoshi"]
+
+  # Included Characters (OPTIONAL)
+  # Names for characters to include on top of the current difficulty setting. See characters.py
+  # You may define one or more characters.
+  # This applies after the difficulty selection. Basically does nothing wiht the default difficulty
+  # included_characters:
+  #   ["Sheik", "Yoshi"]
+
 
   # Item & Location Options
   local_items:

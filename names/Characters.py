@@ -1,8 +1,12 @@
+from ..Options import RunDifficulty, MeleeSlippiOptions
+
 class CharacterTier:
     S = 0
     A = 1
+    B = 2
     BPLUS = 2
     BMINUS = 3
+    C = 4
     CPLUS = 4
     CMINUS = 5
     D = 6
@@ -12,17 +16,17 @@ class CharacterTier:
     @staticmethod
     def get_tier_class(tierClass: str):
         if tierClass == "S":
-            return 0
+            return CharacterTier.S
         if tierClass == "A":
-            return 1
+            return CharacterTier.A
         if tierClass == "B":
-            return 3
+            return CharacterTier.BMINUS
         if tierClass == "C":
-            return 5
+            return CharacterTier.CMINUS
         if tierClass == "D":
-            return 6
+            return CharacterTier.D
         if tierClass == "F":
-            return 7
+            return CharacterTier.F
 
 class CharacterName:
     MARIO = "Mario"
@@ -68,6 +72,41 @@ class Character:
         self.name = getattr(CharacterName,id)
         self.tier = getattr(CharacterTier,tier)
 
+    # Check if the current character is valid in the current difficulty setting
+    def is_valid_for_run(self, options: MeleeSlippiOptions):
+
+        # Our starting character is valid
+        if self.name in options.starting_characters:
+            return True
+
+        # Included characters are always valid
+        if self.name in options.included_characters:
+            return True
+        
+        # Excluded characters are never valid
+        if self.name in options.excluded_characters:
+            return False
+
+        # Difficulty checks
+        # On default - all characters are valid
+        if options.run_difficulty == RunDifficulty.option_default:
+            return True
+
+        # Return true if the character meets conditions
+        if options.run_difficulty == RunDifficulty.option_super_easy and self.tier <= CharacterTier.get_tier_class("S"):
+            return True
+        elif options.run_difficulty == RunDifficulty.option_easy and self.tier <= CharacterTier.get_tier_class("A"):
+            return True
+        elif options.run_difficulty == RunDifficulty.option_normal and self.tier <= CharacterTier.get_tier_class("B"):
+            return True
+        elif options.run_difficulty == RunDifficulty.option_hard and self.tier <= CharacterTier.get_tier_class("C"):
+            return True
+        elif options.run_difficulty == RunDifficulty.option_impossible and self.tier >= CharacterTier.get_tier_class("D"):
+            return True
+        
+        # Otherwise - bail with a false
+        return False
+
 def getCharacterList():
     return [
         Character("FOX", "S"),
@@ -77,17 +116,17 @@ def getCharacterList():
         Character("SHEIK", "A"),
         Character("CF", "A"),
         Character("PEACH", "A"),
-        Character("IC", "BPLUS"),
+        Character("IC", "A"),
         Character("PIKACHU", "BPLUS"),
         Character("YOSHI", "BPLUS"),
+        Character("DK", "BPLUS"),
         Character("SAMUS", "BPLUS"),
         Character("LUIGI", "BMINUS"),
         Character("DRMARIO", "BMINUS"),
+        Character("LINK", "CPLUS"),
         Character("GANONDORF", "CPLUS"),
         Character("MARIO", "CPLUS"),
-        Character("DK", "CMINUS"),
         Character("YLINK", "CMINUS"),
-        Character("LINK", "CMINUS"),
         Character("GW", "CMINUS"),
         Character("MEWTWO", "D"),
         Character("ROY", "D"),
@@ -97,4 +136,3 @@ def getCharacterList():
         Character("KIRBY", "F"),
         Character("BOWSER", "F")
     ]
-    # return [{"id": name, "name": getattr(CharacterName,name)} for name in dir(CharacterName) if not name.startswith('__') ]
