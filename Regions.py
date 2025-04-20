@@ -11,14 +11,14 @@ def create_regions(world: MultiWorld, options, player: int):
 
     # Create regions per character
     for character in getCharacterList():
-        char_region = Region(character["name"], player, world)
+        char_region = Region(character.name, player, world)
 
         # Add the locations for each of the wins we need
         appendingLocations: Dict[str, int] = {}
         for number in options.wins_needed.value:
-            appendingLocations[f"{character["name"]} {number} Wins"] = location_table[f"{character["name"]} {number} Wins"]
+            appendingLocations[f"{character.name} {number} Wins"] = location_table[f"{character.name} {number} Wins"]
         
         char_region.add_locations(appendingLocations, MeleeSlippiLocation)
 
-        menu_region.connect(char_region, f"{character["name"]}")
+        menu_region.connect(char_region, f"{character.name}")
         world.regions.append(char_region)
