@@ -1,5 +1,6 @@
 import random
-from typing import List, Dict, Any
+import json
+from typing import List, Mapping, Any
 from BaseClasses import MultiWorld
 from .Regions import create_regions
 from .Locations import MeleeSlippiLocation, location_table
@@ -24,9 +25,6 @@ class MeleeSlippiWorld(World):
     topology_present = True  # show path to required location checks in spoiler
     starting_characters = {}
     valid_characters = set()
-
-    # area_connections: Dict[int, int]
-    # area_cost_map: Dict[int,int]
 
     # Pre generation checks - mostly sanity checks
     def generate_early(self):
@@ -97,7 +95,7 @@ class MeleeSlippiWorld(World):
         self.multiworld.itempool += item_pool
 
         # We have extra slots to fill - for each win per player, there will be an extra spot. Take our starting characters out of the pool as well if any of them were valid to play
-        fill_count = (len(getCharacterList()) * len(self.options.wins_needed.value) - len(self.valid_characters)) + len([character for character in self.starting_characters if character in valid_character_names])
+        fill_count = (len(self.valid_characters) * len(self.options.wins_needed.value) - len(self.valid_characters)) + len([character for character in self.starting_characters if character in valid_character_names])
 
         self.multiworld.itempool += [self.create_item("Trophy") for i in range(0,fill_count)]
     
@@ -120,12 +118,11 @@ class MeleeSlippiWorld(World):
             self.multiworld.push_precollected(self.create_item(character))
     
 
-    def fill_slot_data(self) -> Dict[str, Any]:
+    def fill_slot_data(self):
         # Send over some information to the server that the game client will need to know
-        data_dict = {
-            "wins_needed": self.options.wins_needed,
+        return {
+            "wins_needed": self.options.wins_needed.value,
             "total_character_wins_needed": self.options.total_character_wins_needed.value,
             "required_wins_per_character": self.options.required_wins_per_character.value,
             "valid_characters": [character.name for character in self.valid_characters]
         }
-        return data_dict
