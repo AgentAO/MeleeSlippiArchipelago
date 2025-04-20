@@ -69,20 +69,14 @@ Melee Slippi:
   # Number of wins per character to win the run
   # Default to 1 - you can set this higher if you're doing less characters but want a longer run
   required_wins_per_character:
-    1: 50
-    random: 0
-    random-low: 0
-    random-high: 0
+    1
 
   # Total wins needed (OPTIONAL)
   # If you want to win with less characters than the total pool, you can define that number here
   # Keep this number under the count of valid characters. It will error otherwise
   # 0 = all valid characters
   total_character_wins_needed:
-    0: 50
-    random: 0
-    random-low: 0
-    random-high: 0
+    0
 
   # Starting Characters (OPTIONAL)
   # Names for the starting character to select. See characters.py
