@@ -68,6 +68,7 @@ Melee Slippi:
 
   # Number of wins per character to win the run
   # Default to 1 - you can set this higher if you're doing less characters but want a longer run
+  # Min 1, Max 10
   required_wins_per_character:
     1
 
@@ -75,6 +76,7 @@ Melee Slippi:
   # If you want to win with less characters than the total pool, you can define that number here
   # Keep this number under the count of valid characters. It will error otherwise
   # 0 = all valid characters
+  # Min 0, Max 26
   total_character_wins_needed:
     0
 
@@ -89,14 +91,14 @@ Melee Slippi:
   # You may define one or more characters.
   # This applies after the difficulty selection
   # excluded_characters:
-  #   ["Luigi", "Yoshi"]
+    # ["Luigi", "Yoshi"]
 
   # Included Characters (OPTIONAL)
   # Names for characters to include on top of the current difficulty setting. See characters.py
   # You may define one or more characters.
   # This applies after the difficulty selection. Basically does nothing wiht the default difficulty
   # included_characters:
-  #   ["Sheik", "Yoshi"]
+    # ["Sheik", "Yoshi"]
 
   # Item & Location Options
   local_items:
